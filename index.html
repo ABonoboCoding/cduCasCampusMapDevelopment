@@ -13,6 +13,25 @@
     <h3>CDU Casuarina Campus</h3>
     <!--The div element for the map -->
     <div id="map"></div>
+
+    <label for="locName"> Location/Bin Name </label>
+    <input type="text" placeholder="Name/Location" id="locNameInput">
+
+    <label for="longitude"> Longtitude: </label>
+    <input type="number" placeholder="longitude" id="lngInput">
+
+    <label for="latitude"></label>
+    <input type="number" placeholder="latitude" id="ltdInput">
+
+    <label for="wasteType">Choose a type of waste disposal</label>
+    <select name="wastetype" id="wasteType">
+      <option value="recycling">Co-mingled</option>
+      <option value="recycling">Recycling</option>
+      <option value="recycling">General</option>
+    </select>
+
+    <button type="button" onclick="getInputValue();">Add location</button>
+
   </body>
   <script type="text/javascript" src="js/scripts.js"></script>
   <script defer

@@ -1,3 +1,4 @@
+dataStorage = window.localStorage;
 // Initialize and add the map
 function initMap() {
   //lat and lng of cdu campus
@@ -72,4 +73,18 @@ function initMap() {
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
       }
+}
+
+//function to get user lngInput
+function getInputValue(){
+  console.log("Ye");
+  var locName = document.getElementById("locNameInput").value;
+  var lngVal = document.getElementById("lngInput").value;
+  var ltdVal = document.getElementById("ltdInput").value;
+  var wasteType = document.getElementById("wasteType").value;
+
+  var locationDetails = {lng: lngVal, ltd: lngVal, Type: wasteType};
+  var locationDetailsJSON = JSON.stringify(locationDetails);
+
+  localStorage.setItem(locName, locationDetailsJSON);
 }
