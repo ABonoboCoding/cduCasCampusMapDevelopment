@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en-US">
 <html>
   <head>
     <style>
@@ -17,17 +18,17 @@
     <label for="locName"> Location/Bin Name </label>
     <input type="text" placeholder="Name/Location" id="locNameInput">
 
+    <label for="latitude">Latitude</label>
+    <input type="number" placeholder="latitude" id="ltdInput">
+
     <label for="longitude"> Longtitude: </label>
     <input type="number" placeholder="longitude" id="lngInput">
 
-    <label for="latitude"></label>
-    <input type="number" placeholder="latitude" id="ltdInput">
-
     <label for="wasteType">Choose a type of waste disposal</label>
     <select name="wastetype" id="wasteType">
-      <option value="recycling">Co-mingled</option>
-      <option value="recycling">Recycling</option>
-      <option value="recycling">General</option>
+      <option value="Co-mingled">Co-mingled</option>
+      <option value="Recycling">Recycling</option>
+      <option value="General">General</option>
     </select>
 
     <button type="button" onclick="getInputValue();">Add location</button>

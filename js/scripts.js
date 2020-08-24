@@ -39,9 +39,43 @@ function initMap() {
   });
 
   cduLibPolygon.addListener('click', function (){
-    wi
-    e.location.href = 'https://www.cdu.edu.au/library';
+    window.location.href = 'https://www.cdu.edu.au/library';
   });
+
+  if (localStorage.length >= 1){
+    for (var index = 0; index < localStorage.length; index++){
+      var locName = localStorage.key(index);
+      var locDetails = JSON.parse(localStorage.getItem(locName));
+      var ltd = parseFloat(locDetails.ltd);
+      var lng = parseFloat(locDetails.lng);
+      var locCoords = {lat: ltd, lng: lng};
+      console.log(locCoords);
+
+      if (locDetails.Type == "Recycling"){
+        var locName = new google.maps.Circle({
+          center: locCoords,
+          radius:10,
+          map: map,
+          strokeColor: 'yellow',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: 'light yellow',
+          fillOpacity: 0.35
+        });
+      } else if(locDetails.Type === "General"){
+        var locName = new google.maps.Circle({
+          center: locCoords,
+          radius:10,
+          map: map,
+          strokeColor: 'black',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: 'grey',
+          fillOpacity: 0.35
+        });
+      }
+    }
+  }
 
   if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -65,7 +99,6 @@ function initMap() {
           handleLocationError(false, infoWindow, map.getCenter());
         }
 
-
       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
@@ -75,16 +108,39 @@ function initMap() {
       }
 }
 
+//get all bin locations
+function displayAllLocations(){
+  for (var index = 0; index < localStorage.length; index++){
+    var locName = localStorage.key(index);
+    var locDetails = JSON.parse(localStorage.getItem(locName));
+    var ltd = parseInt(locDetails.ltd);
+    var lng = parseInt(locDetails.lng);
+    var locCoords = {lat: -12.371575, lng: 130.868705};
+
+    var locName = new google.maps.Circle({
+      center: locCoords,
+      radius:200,
+      map: map,
+      strokeColor: 'black',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: 'grey',
+      fillOpacity: 0.35
+    });
+
+  }
+}
+
 //function to get user lngInput
 function getInputValue(){
-  console.log("Ye");
   var locName = document.getElementById("locNameInput").value;
-  var lngVal = document.getElementById("lngInput").value;
   var ltdVal = document.getElementById("ltdInput").value;
+  var lngVal = document.getElementById("lngInput").value;
   var wasteType = document.getElementById("wasteType").value;
 
-  var locationDetails = {lng: lngVal, ltd: lngVal, Type: wasteType};
+  var locationDetails = {ltd: ltdVal, lng: lngVal, Type: wasteType};
   var locationDetailsJSON = JSON.stringify(locationDetails);
 
   localStorage.setItem(locName, locationDetailsJSON);
+  initMap();
 }
