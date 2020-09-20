@@ -2,6 +2,7 @@
 <html lang="en-US">
 <html>
   <head>
+    <meta charset="utf-8"/>
     <style>
       #map {
         width: 400px;
@@ -15,6 +16,8 @@
     <!--The div element for the map -->
     <div id="map"></div>
 
+    <button id = "pickFromMapBtn" onclick = "checkPicking();">Retrieve coordinate from map</button>
+
     <label for="locName"> Location/Bin Name </label>
     <input type="text" placeholder="Name/Location" id="locNameInput">
 
@@ -23,13 +26,19 @@
 
     <label for="longitude"> Longtitude: </label>
     <input type="number" placeholder="longitude" id="lngInput">
+    <br>
+    <label for="recycle">Recycle</label>
+    <input type="checkbox" id="recycle" name="wasteType" value="recycle">
 
-    <label for="wasteType">Choose a type of waste disposal</label>
-    <select name="wastetype" id="wasteType">
-      <option value="Co-mingled">Co-mingled</option>
-      <option value="Recycling">Recycling</option>
-      <option value="General">General</option>
-    </select>
+    <label for="comingled">Co-Mingled</label>
+    <input type="checkbox" id="comingled" name="wasteType" value="comingled">
+
+    <label for="special">Special</label>
+    <input type="checkbox" id="special" name="wasteType" value="special">
+
+    <label for="general">General</label>
+    <input type="checkbox" id="general" name="wasteType" value="general">
+
 
     <button type="button" onclick="getInputValue();">Add location</button>
 
