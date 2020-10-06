@@ -49,6 +49,7 @@ function initMap() {
   if (localStorage.length >= 1){
     for (var index = 0; index < localStorage.length; index++){
       var locName = localStorage.key(index);
+      var key = locName;
       var locDetails = JSON.parse(localStorage.getItem(locName));
       var ltd = parseFloat(locDetails.ltd);
       var lng = parseFloat(locDetails.lng);
@@ -59,6 +60,7 @@ function initMap() {
       var locCoords = {lat: ltd, lng: lng};
 
       var locName = new google.maps.Circle({
+        title: key,
         center: locCoords,
         radius:1,
         map: map,
@@ -69,9 +71,10 @@ function initMap() {
         fillOpacity: 0.35
       });
 
-      locName.addListener('click', function (){
-        window.location.href = '#'+locName;
-        var locNameTd = document.getElementById(locName);
+      google.maps.event.addListener( locName, 'click', function (evt){
+        var key = this.get('title');
+        window.location.href = '#'+key;
+        var locNameTd = document.getElementById(key);
         locNameTd.classList.add("viewedTd");
         setTimeout(() => { locNameTd.classList.remove("viewedTd"); }, 3000);
       });
@@ -179,43 +182,6 @@ function initMap() {
 //get all bin locations
 function listAllLocations(){
   document.getElementById("outputTable").innerHTML = "";
-  var headingRow = document.createElement('tr');
-
-  var nameHeading = document.createElement('th');
-  nameHeading.innerHTML="Name";
-
-  var recHeading = document.createElement('th');
-  recHeading.innerHTML="Recycle";
-
-  var coHeading = document.createElement('th');
-  coHeading.innerHTML="Co-mingled";
-
-  var genHeading = document.createElement('th');
-  genHeading.innerHTML="General";
-
-  var speHeading = document.createElement('th');
-  speHeading.innerHTML="Special";
-
-  var editHeading = document.createElement('th');
-  editHeading.innerHTML="Edit";
-
-  var viewHeading = document.createElement('th');
-  viewHeading.innerHTML="View";
-
-  var delHeading = document.createElement('th');
-  delHeading.innerHTML="Delete";
-
-  headingRow.appendChild(nameHeading);
-  headingRow.appendChild(recHeading);
-  headingRow.appendChild(coHeading);
-  headingRow.appendChild(genHeading);
-  headingRow.appendChild(speHeading);
-  headingRow.appendChild(editHeading);
-  headingRow.appendChild(viewHeading);
-  headingRow.appendChild(delHeading);
-
-  document.querySelector('.outputTable').appendChild(headingRow);
-
   if (localStorage.length >= 1) {
 
     const binLocations = [];
@@ -231,6 +197,47 @@ function listAllLocations(){
       });
 
   };
+
+}
+
+//filter bin locations
+function filterCheck(){
+  var recFilCheck = document.getElementById("recFilter").checked;
+  var coFilCheck = document.getElementById("coFilter").checked;
+  var genFilCheck = document.getElementById("genFilter").checked;
+  var speFilCheck = document.getElementById("speFilter").checked;
+  if (recFilCheck==false && coFilCheck==false && genFilCheck==false && speFilCheck==false){
+    listAllLocations();
+  } else{
+    document.getElementById("outputTable").innerHTML = "";
+    if (localStorage.length >= 1) {
+
+      const binLocations = [];
+
+      for (var index = 0; index < localStorage.length; index++) {
+        var locName = localStorage.key(index);
+        var locDetails = JSON.parse(localStorage.getItem(locName));
+        if (locDetails.rec == true && recFilCheck == true){
+          binLocations.push({locName: locName, locInfo: locDetails});
+        }
+        if (locDetails.co == true && coFilCheck == true){
+          binLocations.push({locName: locName, locInfo: locDetails});
+        }
+        if (locDetails.gen == true && genFilCheck == true){
+          binLocations.push({locName: locName, locInfo: locDetails});
+        }
+        if (locDetails.spe == true && speFilCheck == true){
+          binLocations.push({locName: locName, locInfo: locDetails});
+        }
+
+      }
+
+      binLocations.forEach((location) => {
+          listLocations(location.locName, location.locInfo);
+        });
+
+    };
+  }
 
 
 }
@@ -385,6 +392,7 @@ function viewOnMap(evt) {
   if (localStorage.length >= 1){
     for (var index = 0; index < localStorage.length; index++){
       var locName = localStorage.key(index);
+      var key = locName;
       var locDetails = JSON.parse(localStorage.getItem(locName));
       var ltd = parseFloat(locDetails.ltd);
       var lng = parseFloat(locDetails.lng);
@@ -395,6 +403,7 @@ function viewOnMap(evt) {
       var locCoords = {lat: ltd, lng: lng};
 
       var locName = new google.maps.Circle({
+        title: key,
         center: locCoords,
         radius:1,
         map: map,
@@ -405,9 +414,10 @@ function viewOnMap(evt) {
         fillOpacity: 0.35
       });
 
-      locName.addListener('click', function (){
-        window.location.href = '#'+locName;
-        var locNameTd = document.getElementById(locName);
+      google.maps.event.addListener( locName, 'click', function (evt){
+        var key = this.get('title');
+        window.location.href = '#'+key;
+        var locNameTd = document.getElementById(key);
         locNameTd.classList.add("viewedTd");
         setTimeout(() => { locNameTd.classList.remove("viewedTd"); }, 3000);
       });
@@ -510,6 +520,7 @@ function viewOnMap(evt) {
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
       }
+      filterCheck();
 };
 
 
@@ -590,7 +601,7 @@ function listLocations(key, value){
   row.appendChild(viewButtonTd);
   row.appendChild(deleteButtonTd);
 
-  document.querySelector('.outputTable').appendChild(row);
+  document.getElementById('outputTable').appendChild(row);
   return row;
 
 }

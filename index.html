@@ -73,19 +73,22 @@
   </div>
 </div>
   <h3 style="text-align:center">Locations</h3>
-    <table id="outputTable" class="outputTable">
-      <tr>
+    <table>
+      <thead>
         <th>Name</th>
         <!--<th>Latitude</th>
         <th>Longitude</th> -->
-        <th>Recycle</th>
-        <th>Co-mingled</th>
-        <th>General</th>
-        <th>Special</th>
+        <th>Recycle <input type="checkbox" id="recFilter" onclick="filterCheck();"></th>
+        <th>Co-mingled <input type="checkbox" id="coFilter" onclick="filterCheck();"></th>
+        <th>General <input type="checkbox" id="genFilter" onclick="filterCheck();"></th>
+        <th>Special <input type="checkbox" id="speFilter" onclick="filterCheck(); "></th>
         <th>Edit</th>
-        <!--<th>View</th>-->
+        <th>View</th>
         <th>Delete</th>
-      </tr>
+      </thead>
+      <tbody id="outputTable">
+
+      </tbody>
     </table>
 
   </body>

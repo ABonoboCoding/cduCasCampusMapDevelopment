@@ -73,7 +73,7 @@ table tr td:last-child {
 }
 
 .viewedTd {
-  background-color: red;
+  background-color: grey;
   color: white;
 }
 
