@@ -1,46 +1,92 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en-US">
 <html>
   <head>
     <meta charset="utf-8"/>
-    <style>
-      #map {
-        width: 400px;
-        height: 600px;
-        background-color: grey;
-      }
-    </style>
+    <link rel = "stylesheet"
+   type = "text/css"
+   href = "css/styles.css" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <h3>CDU Casuarina Campus</h3>
+
+    <div class="container">
     <!--The div element for the map -->
-    <div id="map"></div>
+      <div class="item">
+        <div id="mapZone">
+          <div id="map"></div>
+        </div>
+      </div>
 
-    <button id = "pickFromMapBtn" onclick = "checkPicking();">Retrieve coordinate from map</button>
+    <div class="item">
+      <div id="form">
+        <h3 style="text-align: center"> Add new/Edit locations </h3>
+        <button id = "pickFromMapBtn" onclick = "checkPicking();" class="pickingButton">Retrieve coordinate from map</button>
+        <br>
+        <label for="locName"> Location/Bin Name: </label>
+        <br>
+        <input type="text" placeholder="Name/Location" id="locNameInput">
 
-    <label for="locName"> Location/Bin Name </label>
-    <input type="text" placeholder="Name/Location" id="locNameInput">
+        <p> Coordinates: </p>
+        <div class="sideContainer">
+          <div class="sideItem50">
+            <label for="latitude">Latitude:</label>
+            <input type="number" placeholder="latitude" id="ltdInput" readonly>
+          </div>
+          <div class="sideItem50">
+            <label for="longitude"> Longtitude: </label>
+            <input type="number" placeholder="longitude" id="lngInput" readonly>
+          </div>
+        </div>
 
-    <label for="latitude">Latitude</label>
-    <input type="number" placeholder="latitude" id="ltdInput">
+        <p> Bin types: </p>
+        <div class="sideContainer">
+          <div class="sideItem">
+            <label for="recycle">Recycle</label>
+            <input type="checkbox" id="recycle" name="wasteType" value="recycle">
+          </div>
+          <div class="sideItem">
+            <label for="comingled">Co-Mingled</label>
+            <input type="checkbox" id="comingled" name="wasteType" value="comingled">
+          </div>
+          <div class="sideItem">
+            <label for="general">General</label>
+            <input type="checkbox" id="general" name="wasteType" value="general">
+          </div>
+          <div class="sideItem">
+            <label for="special">Special</label>
+            <input type="checkbox" id="special" name="wasteType" value="special">
+          </div>
+        </div>
 
-    <label for="longitude"> Longtitude: </label>
-    <input type="number" placeholder="longitude" id="lngInput">
-    <br>
-    <label for="recycle">Recycle</label>
-    <input type="checkbox" id="recycle" name="wasteType" value="recycle">
+        <div class="sideContainer">
+          <div class="sideItem50">
+            <button type="button" onclick="getInputValue();" class="formButton">Add/Edit location</button>
+          </div>
+          <div class="sideItem50">
+            <button type="button" onclick="clearForm();" class="formButton">Clear form</button>
+          </div>
+        </div>
 
-    <label for="comingled">Co-Mingled</label>
-    <input type="checkbox" id="comingled" name="wasteType" value="comingled">
-
-    <label for="special">Special</label>
-    <input type="checkbox" id="special" name="wasteType" value="special">
-
-    <label for="general">General</label>
-    <input type="checkbox" id="general" name="wasteType" value="general">
-
-
-    <button type="button" onclick="getInputValue();">Add location</button>
+    </div>
+  </div>
+</div>
+  <h3 style="text-align:center">Locations</h3>
+    <table id="outputTable" class="outputTable">
+      <tr>
+        <th>Name</th>
+        <!--<th>Latitude</th>
+        <th>Longitude</th> -->
+        <th>Recycle</th>
+        <th>Co-mingled</th>
+        <th>General</th>
+        <th>Special</th>
+        <th>Edit</th>
+        <!--<th>View</th>-->
+        <th>Delete</th>
+      </tr>
+    </table>
 
   </body>
   <script type="text/javascript" src="js/scripts.js"></script>
