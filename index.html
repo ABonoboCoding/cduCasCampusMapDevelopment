@@ -24,11 +24,35 @@
         <h3 style="text-align: center"> Add new/Edit locations </h3>
         <button id = "pickFromMapBtn" onclick = "checkPicking();" class="pickingButton">Retrieve coordinate from map</button>
         <br>
-        <label for="locName"> Location/Bin Name: </label>
+        <h4> Location/Bin Name: </h4>
+        <div style="text-align: center">
         <br>
-        <input type="text" placeholder="Name/Location" id="locNameInput">
-
-        <p> Coordinates: </p>
+        <select name = "bColors" id = "bColors" onchange="changeColor();">
+          <option value="orange" style = "background-Color:orange; color:orange">Orange</option>
+          <option value="red" style = "background-Color:red; color:red">Red</option>
+          <option value="pink" style = "background-Color:pink; color:pink">Pink</option>
+          <option value="blue" style = "background-Color:blue; color:blue">Blue</option>
+          <option value="yellow" style = "background-Color:yellow; color:yellow">Yellow</option>
+          <option value="brown" style = "background-Color:brown; color:brown">Brown</option>
+          <option value="green" style = "background-Color:green; color:green">Green</option>
+        </select>
+        <select name = "bNumber" id = "bNumber">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+        <input type="text" placeholder="Bin index (number)" id="binIndex">
+      </div>
+        <h4> Coordinates: </h4>
         <div class="sideContainer">
           <div class="sideItem50">
             <label for="latitude">Latitude:</label>
@@ -40,7 +64,7 @@
           </div>
         </div>
 
-        <p> Bin types: </p>
+        <h4> Bin types: </h4>
         <div class="sideContainer">
           <div class="sideItem">
             <label for="recycle">Recycle</label>
@@ -73,6 +97,36 @@
   </div>
 </div>
   <h3 style="text-align:center">Locations</h3>
+  <h4> Building filter </b3>
+    <br>
+  <select name = "bColorFilter" id = "bColorFilter" onchange="filterChangeColor(); filterCheck();">
+    <option value="---" style = "background-Color:white; color:black">---</option>
+    <option value="orange" style = "background-Color:orange; color:orange">Orange</option>
+    <option value="red" style = "background-Color:red; color:red">Red</option>
+    <option value="pink" style = "background-Color:pink; color:pink">Pink</option>
+    <option value="blue" style = "background-Color:blue; color:blue">Blue</option>
+    <option value="yellow" style = "background-Color:yellow; color:yellow">Yellow</option>
+    <option value="brown" style = "background-Color:brown; color:brown">Brown</option>
+    <option value="green" style = "background-Color:green; color:green">Green</option>
+  </select>
+  <select name = "bNumberFilter" id = "bNumberFilter" onchange="filterCheck();">
+    <option value="---">---</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+  </select>
+  <input type="text" placeholder="Bin index (number)" id="binIndexFilter" onkeyup="filterCheck();">
+  <button type="button" style="width: 10%" onclick="clearFilter();" class="formButton">Clear filter</button>
+  <h4> Bin type filter </h4>
     <table>
       <thead>
         <th>Name</th>

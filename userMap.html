@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<html>
+ <head>
+   <meta charset="utf-8"/>
+   <link rel = "stylesheet"
+  type = "text/css"
+  href = "css/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ </head>
+ <body>
+   <div id="mapSpace">
+    <div id="userMap"></div>
+  </div>
+  <div style="text-align: center">
+  <button id = "viewNearMeButton" onclick = "focusOnUser();" class="viewNearMeButton">View my position</button>
+  <button id = "renewSelfLocation" onclick = "resetSelfLocation();" class="viewNearMeButton">Renew my position</button>
+  </div>
+  <h3 style="text-align:center">Locations</h3>
+  <h4> Building filter </b3>
+    <br>
+  <select name = "bColorFilter" id = "bColorFilter" onchange="filterChangeColor(); filterCheck();">
+    <option value="---" style = "background-Color:white; color:black">---</option>
+    <option value="orange" style = "background-Color:orange; color:orange">Orange</option>
+    <option value="red" style = "background-Color:red; color:red">Red</option>
+    <option value="pink" style = "background-Color:pink; color:pink">Pink</option>
+    <option value="blue" style = "background-Color:blue; color:blue">Blue</option>
+    <option value="yellow" style = "background-Color:yellow; color:yellow">Yellow</option>
+    <option value="brown" style = "background-Color:brown; color:brown">Brown</option>
+    <option value="green" style = "background-Color:green; color:green">Green</option>
+  </select>
+  <select name = "bNumberFilter" id = "bNumberFilter" onchange="filterCheck();">
+    <option value="---">---</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+  </select>
+  <input type="text" placeholder="Bin index (number)" id="binIndexFilter" onkeyup="filterCheck();">
+  <button type="button" style="width: 10%" onclick="clearFilter();" class="userFormButton">Clear filter</button>
+  <h4> Bin type filter </h4>
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Recycle <input type="checkbox" id="recFilter" onclick="filterCheck();"></th>
+        <th>Co-mingled <input type="checkbox" id="coFilter" onclick="filterCheck();"></th>
+        <th>General <input type="checkbox" id="genFilter" onclick="filterCheck();"></th>
+        <th>Special <input type="checkbox" id="speFilter" onclick="filterCheck(); "></th>
+        <th>View</th>
+      </thead>
+      <tbody id="outputTable">
+
+      </tbody>
+    </table>
+
+ </body>
+ <script type="text/javascript" src="js/userMap.js"></script>
+ <script defer
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA72fO19fgBMBh0DeOR6e9f9-QCdtJo5Jw&callback=initMap">
+   </script>
+
+</html>

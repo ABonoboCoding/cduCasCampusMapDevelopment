@@ -4,6 +4,9 @@ var coordinatePickingMode = false;
 
 var map;
 
+var userPos;
+
+var userLoc;
 // Initialize and add the map
 function initMap() {
   //lat and lng of cdu campus
@@ -15,7 +18,7 @@ function initMap() {
   //Library longitude -12.371610 and latitude 130.869377
 
   map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 17, center: cduCasCampus});
+      document.getElementById('userMap'), {zoom: 17, center: cduCasCampus});
 
 
   //var cduCasCampusMarker = new google.maps.Marker({position: cduCasCampus, map: map});
@@ -142,49 +145,68 @@ function initMap() {
 
   listAllLocations();
   filterCheck();
-  changeColor();
-  clearForm();
   filterChangeColor();
 
-  /*
-  if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
+  if (userLoc == null){
+    if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
 
-            var userIcon = {
-              url : 'https://img.icons8.com/dusk/16/000000/user-location.png', //LINK to icons: https://icons8.com/icons/set/user-16x16
-              size: new google.maps.Size(16, 16)
-            }
+              var userIcon = {
+                url : 'https://img.icons8.com/dusk/16/000000/user-location.png', //LINK to icons: https://icons8.com/icons/set/user-16x16
+                size: new google.maps.Size(16, 16)
+              }
 
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
+              userPos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              userLoc = true;
 
-            var userLocationMarker = new google.maps.Marker({position: pos, map: map, icon: userIcon});
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-
-        map.addListener('click', function(e) {
-          if (coordinatePickingMode === true){
-            GetCoordinatesFromMap(e.latLng, map);
+              var userLocationMarker = new google.maps.Marker({position: userPos, map: map, icon: userIcon});
+            }, function() {
+              handleLocationError(true, infoWindow, map.getCenter());
+            });
           } else {
-            // do nothing so that map can be operated normally
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
           }
-        });
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(browserHasGeolocation ?
+                                'Error: The Geolocation service failed.' :
+                                'Error: Your browser doesn\'t support geolocation.');
+          infoWindow.open(map);
+        }
+  } else if(userLoc == true){
+    navigator.geolocation.getCurrentPosition(function(position) {
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
+      var userIcon = {
+        url : 'https://img.icons8.com/dusk/16/000000/user-location.png', //LINK to icons: https://icons8.com/icons/set/user-16x16
+        size: new google.maps.Size(16, 16)
       }
-      */
+
+      userPos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      userLoc = true;
+
+      var userLocationMarker = new google.maps.Marker({position: userPos, map: map, icon: userIcon});
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Error: Your browser doesn\'t support geolocation.');
+  infoWindow.open(map);
+  }
+
 }
 
 //get all bin locations
@@ -264,45 +286,6 @@ function filterCheck(){
   }
 }
 
-//function to get user lngInput
-function getInputValue(){
-  var binIndex = document.getElementById("binIndex").value;
-  var ltdVal = document.getElementById("ltdInput").value;
-  var lngVal = document.getElementById("lngInput").value;
-
-  var recycle = document.getElementById("recycle").checked;
-  var comingled = document.getElementById("comingled").checked;
-  var general = document.getElementById("general").checked;
-  var special = document.getElementById("special").checked;
-
-  var bColorInput = document.getElementById("bColors");
-  var bColor = bColorInput.options[bColorInput.selectedIndex].text;
-
-  var bNumberInput = document.getElementById("bNumber");
-  var bNumber = bNumberInput.options[bNumberInput.selectedIndex].text;
-
-
-  var locationDetails = {ltd: ltdVal, lng: lngVal, rec: recycle, co: comingled, gen: general, spe: special, bCol: bColor, bNum: bNumber, bIndex: binIndex};
-  var locationDetailsJSON = JSON.stringify(locationDetails);
-
-  var locName = bColor + " " + bNumber + " B" + binIndex;
-  if (ltdVal == 0 || lngVal == 0){
-    alert("Error, form not complete");
-  } else {
-    localStorage.setItem(locName, locationDetailsJSON);
-    clearForm();
-    location.reload();
-  }
-
-}
-
-function changeColor(){
-  var bColorInput = document.getElementById("bColors");
-  var bColor = bColorInput.options[bColorInput.selectedIndex].value;
-  bColorInput.style.backgroundColor = bColor;
-  bColorInput.style.color = bColor;
-}
-
 function filterChangeColor(){
   var bColorFilterInput = document.getElementById("bColorFilter");
   var bColorFilter = bColorFilterInput.options[bColorFilterInput.selectedIndex].value;
@@ -313,36 +296,6 @@ function filterChangeColor(){
     bColorFilterInput.style.backgroundColor = bColorFilter;
     bColorFilterInput.style.color = bColorFilter;
   }
-
-}
-
-// Clear form
-function clearForm(){
-  var binIndexField = document.querySelector("#binIndex");
-  var ltdInputField = document.querySelector("#ltdInput");
-  var lngInputField = document.querySelector("#lngInput");
-  var recCheckBox = document.querySelector("#recycle");
-  var coCheckBox = document.querySelector("#comingled");
-  var speCheckBox = document.querySelector("#special");
-  var genCheckBox = document.querySelector("#general");
-  var bColorInput = document.getElementById("bColors");
-  var bNumberInput = document.querySelector("#bNumber");
-
-  binIndexField.value = "";
-  ltdInputField.value = 0;
-  lngInputField.value = 0;
-
-  bColorInput.options[bColorInput.selectedIndex].text = "Orange";
-  bNumberInput.value = 1;
-
-  recCheckBox.checked = false;
-
-  coCheckBox.checked = false;
-
-  genCheckBox.checked = false;
-
-  speCheckBox.checked = false;
-  filterChangeColor();
 
 }
 
@@ -368,107 +321,16 @@ function clearFilter(){
   speFilInput.checked = false;
   filterChangeColor();
   filterCheck();
-
 }
 
-
-// Function for getting coordinates from map
-function GetCoordinatesFromMap(latLng, map) {
-  //Optional code for if we want to add a marker on the map too
-  // var marker = new google.maps.Marker({
-  //   position: latLng,
-  //   map: map
-  // });
-  // map.panTo(latLng);
-  alert("New map marker added, lat: " + latLng.lat() + " lng: " + latLng.lng());
-  console.log("New map marker added, lat: " + latLng.lat() + " lng: " + latLng.lng());
-  // Insert picked coordinates to form fields
-  document.getElementById("ltdInput").value = latLng.lat();
-  document.getElementById("lngInput").value = latLng.lng();
-
-  //create a temporary Marker
-
-  var tempMarker = new google.maps.Marker({
-    position: {lat: latLng.lat(), lng: latLng.lng()},
-    map: map,
-  });
-
-  // Disable coordinatePickingMode
-  coordinatePickingMode = false;
-  document.getElementById("pickFromMapBtn").innerHTML = "Retrieve coodinate from map";
-
-}
-
-//We only want to pick coordinates when button is pressed so we handle that with this function for now
-function checkPicking(){
-  if (coordinatePickingMode == true){
-    coordinatePickingMode = false;
-    document.getElementById("mapZone").classList.remove("pickingModeActive");
-    document.getElementById("pickFromMapBtn").innerHTML = "Retrieve coodinate from map";
-    return;
-  }
-
-  if (coordinatePickingMode == false){
-    coordinatePickingMode = true;
-    document.getElementById("mapZone").classList.add("pickingModeActive");
-    document.getElementById("pickFromMapBtn").innerHTML = "Stop retrieving coodinate from map";
-    return;
+function focusOnUser(){
+  if (userLoc == false){
+    alert("Your location is not yet found, please enable location or wait to try again");
+  } else if (userLoc == true){
+    map.setCenter(userPos);
+    map.setZoom(25);
   }
 }
-
-function editClicked(evt) {
-  var locName = evt.target.dataset.key;
-  var locDetails = JSON.parse(localStorage.getItem(locName));
-  var ltdInputField = document.querySelector("#ltdInput");
-  var lngInputField = document.querySelector("#lngInput");
-  var recCheckBox = document.querySelector("#recycle");
-  var coCheckBox = document.querySelector("#comingled");
-  var speCheckBox = document.querySelector("#special");
-  var genCheckBox = document.querySelector("#general");
-  var binIndex = document.querySelector("#binIndex");
-  var bColorInput = document.getElementById("bColors");
-  var bNumberInput = document.querySelector("#bNumber");
-  binIndex.value = locDetails.bIndex;
-  ltdInputField.value = parseFloat(locDetails.ltd);
-  lngInputField.value = parseFloat(locDetails.lng);
-  bColorInput.value = locDetails.bCol;
-  bNumberInput.value = locDetails.bNum;
-
-  if (locDetails.rec == true){
-    recCheckBox.checked = true;
-  } else{
-    recCheckBox.checked = false;
-  }
-
-  if (locDetails.co == true){
-    coCheckBox.checked = true;
-  } else{
-    coCheckBox.checked = false;
-  }
-
-  if (locDetails.gen == true){
-    genCheckBox.checked = true;
-  } else{
-    genCheckBox.checked = false;
-  }
-
-  if (locDetails.spe == true){
-    speCheckBox.checked = true;
-  } else{
-    speCheckBox.checked = false;
-  }
-
-};
-
-function promptDeletion(evt) {
-  evt.preventDefault();
-  key = evt.target.dataset.key;
-  confirm("Are you sure you want to delete this location?");
-
-  localStorage.removeItem(evt.target.dataset.key);
-
-  location.reload();
-};
 
 function viewOnMap(evt) {
   evt.preventDefault();
@@ -482,6 +344,9 @@ function viewOnMap(evt) {
   map.setZoom(25);
 };
 
+function resetSelfLocation(){
+  initMap();
+}
 
 function listLocations(key, value){
 
@@ -525,14 +390,6 @@ function listLocations(key, value){
     speTd.style.backgroundColor = "grey";
   }
 
-  var editButtonTd = document.createElement('td');
-  var editButton = document.createElement('button');
-  editButton.className = 'listButtons';
-  editButton.dataset.key = key;
-  editButtonTd.appendChild(editButton);
-  editButton.innerHTML = 'Edit';
-  editButton.addEventListener('click', editClicked);
-
   var viewButtonTd = document.createElement('td');
   var viewButton = document.createElement('button');
   viewButton.className = 'listButtons';
@@ -541,14 +398,6 @@ function listLocations(key, value){
   viewButton.innerHTML = 'View';
   viewButton.addEventListener('click', viewOnMap);
 
-  var deleteButtonTd = document.createElement('td');
-  var deleteButton = document.createElement('button');
-  deleteButton.className = 'listButtons';
-  deleteButton.dataset.key = key;
-  deleteButtonTd.appendChild(deleteButton);
-  deleteButton.innerHTML = 'Delete';
-  deleteButton.addEventListener('click', promptDeletion);
-
   row.appendChild(locNameTd);
   //col.appendChild(ltdTd);
   //col.appendChild(lngTd);
@@ -556,9 +405,9 @@ function listLocations(key, value){
   row.appendChild(coTd);
   row.appendChild(genTd);
   row.appendChild(speTd);
+  //row.appendChild(editButtonTd);
   row.appendChild(viewButtonTd);
-  row.appendChild(editButtonTd);
-  row.appendChild(deleteButtonTd);
+  //row.appendChild(deleteButtonTd);
 
   document.getElementById('outputTable').appendChild(row);
   return row;
