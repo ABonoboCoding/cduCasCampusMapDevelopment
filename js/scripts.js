@@ -146,6 +146,14 @@ function initMap() {
   clearForm();
   filterChangeColor();
 
+  map.addListener('click', function(e) {
+         if (coordinatePickingMode === true){
+           GetCoordinatesFromMap(e.latLng, map);
+         } else {
+           // do nothing so that map can be operated normally
+         }
+       });
+
   /*
   if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -266,7 +274,10 @@ function filterCheck(){
 
 //function to get user lngInput
 function getInputValue(){
-  var binIndex = document.getElementById("binIndex").value;
+
+  var binIndexNum = document.getElementById("binIndex").valueAsNumber;
+  var binIndex = ""+binIndexNum;
+
   var ltdVal = document.getElementById("ltdInput").value;
   var lngVal = document.getElementById("lngInput").value;
 
@@ -286,15 +297,49 @@ function getInputValue(){
   var locationDetailsJSON = JSON.stringify(locationDetails);
 
   var locName = bColor + " " + bNumber + " B" + binIndex;
+
   if (ltdVal == 0 || lngVal == 0){
     alert("Error, form not complete");
-  } else {
-    localStorage.setItem(locName, locationDetailsJSON);
-    clearForm();
-    location.reload();
+  } else if (ltdVal !== 0 && lngVal !==0){
+    if (locName in localStorage){
+      var confirmEdit = confirm("This location already exists. Confirm to edit the location or cancel to automatically change index to the next available index.");
+      if (confirmEdit == true){
+        localStorage.setItem(locName, locationDetailsJSON);
+        clearForm();
+        location.reload();
+      } else if (confirmEdit == false){
+        findNextIndex();
+      }
+    }else if ((locName in localStorage)==false){
+      localStorage.setItem(locName, locationDetailsJSON);
+      clearForm();
+      location.reload();
+    }
   }
+}
+
+function findNextIndex(){
+  var binIndexNum = document.getElementById("binIndex").valueAsNumber;
+  var binIndex = ""+binIndexNum;
+
+  var bColorInput = document.getElementById("bColors");
+  var bColor = bColorInput.options[bColorInput.selectedIndex].text;
+
+  var bNumberInput = document.getElementById("bNumber");
+  var bNumber = bNumberInput.options[bNumberInput.selectedIndex].text;
+
+  var locName = bColor + " " + bNumber + " B" + binIndex;
+
+  while (locName in localStorage){
+    binIndexNum += 1;
+    binIndex = ""+binIndexNum;
+    locName = bColor + " " + bNumber + " B" + binIndex;
+  }
+  var bIndexInput = document.getElementById("binIndex");
+  bIndexInput.value = binIndex;
 
 }
+
 
 function changeColor(){
   var bColorInput = document.getElementById("bColors");
@@ -332,7 +377,7 @@ function clearForm(){
   ltdInputField.value = 0;
   lngInputField.value = 0;
 
-  bColorInput.options[bColorInput.selectedIndex].text = "Orange";
+  //bColorInput.options[bColorInput.selectedIndex].text = "Orange";
   bNumberInput.value = 1;
 
   recCheckBox.checked = false;

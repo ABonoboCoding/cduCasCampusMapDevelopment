@@ -22,7 +22,7 @@
     <div class="item">
       <div id="form">
         <h3 style="text-align: center"> Add new/Edit locations </h3>
-        <button id = "pickFromMapBtn" onclick = "checkPicking();" class="pickingButton">Retrieve coordinate from map</button>
+        <button id = "pickFromMapBtn" onclick="checkPicking();" class="pickingButton">Retrieve coordinate from map</button>
         <br>
         <h4> Location/Bin Name: </h4>
         <div style="text-align: center">
@@ -50,7 +50,7 @@
           <option value="11">11</option>
           <option value="12">12</option>
         </select>
-        <input type="text" placeholder="Bin index (number)" id="binIndex">
+        <input type="number" placeholder="Bin index (number)" id="binIndex">
       </div>
         <h4> Coordinates: </h4>
         <div class="sideContainer">
@@ -97,7 +97,8 @@
   </div>
 </div>
   <h3 style="text-align:center">Locations</h3>
-  <h4> Building filter </b3>
+  <p style="font-weight: bold">Note: Only use one filter at a time, reset filter when needed. </p>
+  <h4> Building filter</b3>
     <br>
   <select name = "bColorFilter" id = "bColorFilter" onchange="filterChangeColor(); filterCheck();">
     <option value="---" style = "background-Color:white; color:black">---</option>
